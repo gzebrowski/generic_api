@@ -40,8 +40,14 @@ class ApiBaseCaller(object):
         # ie: 
         # 'order': {'endpoint': 'order', 'subitems': {
         #     'add': {'method': 'post'},
-        #     'get': {'method': 'get', 'endpoint': '%(param_1)s'},
+        #     'get': {'method': 'get', 'endpoint': '%(param_1)s',
+        #             'result_processor': lambda json_resp, *args, **kwargs: json_resp['order']},
         #     'list': {'method': 'get', 'endpoint': 'list'},
+        #     'items': {'endpoint': 'items', 'subitems': {
+        #         'list': {'method': 'get', 'endpoint': 'list'},
+        #         'remove': {'method': 'delete', 'endpoint': '%(param_1)s'},
+        #         ....
+        #         }},
         #     }
         # }
     }
