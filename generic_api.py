@@ -62,7 +62,7 @@ class ApiBaseCaller(object):
             if self.method:
                 return self.parent.call(self.method, *args, **kwargs)
             else:
-                self.parent.call_endpoint(self.endpoints, *args, **kwargs)
+                return self.parent.call_endpoint(self.endpoints, *args, **kwargs)
 
         def __getattr__(self, attr):
             endpoints = list(self.endpoints) + [attr]
