@@ -4,13 +4,14 @@ It is a generic class for creating a custom api interface. Pls see example in te
 
 It allows to call apis by:
 
-1. 
+1.
 ```
 api.post(payload=some_json)
 api.get(...)
 api.put(...)
 etc.
 ```
+
 2.
 ```
 api.some.api.method.get(...)
@@ -23,6 +24,56 @@ for managing authentication, tokens (also for refreshing tokens if need). See ex
 takes optional config dictionary, and keword args that will be stored in self.api_settings - this can be used in call_raw() 
 method (the best place for passing all required credentials, tokens, etc).
 
+METHOD_MAP can be configured like this:
+
+```
+    METHOD_MAP = {
+        'order': {'endpoint': 'order', 'subitems': {
+            'add': {'method': 'post'},
+            'get': {'method': 'get', 'endpoint': '%(param_1)s', 'result_processor': order_get_processor},
+            'list': {'method': 'get', 'endpoint': 'list'},
+            }
+        }
+    }
+```
+
+Then when we call:
+```
+api.order.add(payload={...})  # post to http://apidomain.com/api-path/order will be called
+api.order.get(12)  # get to http://apidomain.com/api-path/order/12 will be called
+api.order.list()  # get to http://apidomain.com/api-path/order/list will be called
+```
+
+we can implement some processing functions for some endpoinds and pass them as result_processor param. For example: 
+if some api is called by /user/get/10/ and returns such json:
+
+```
+{'user': 
+    '10': {
+      'first_name': 'John'
+      'last_name': 'Smith'
+    }
+}
+```
+
+then we could implement user_get_processor as:
+
+```
+def user_get_processor(json_result, user_id):
+    return json_result['user'][str(user_id)]
+```
+
+and then calling api.user.get(10) would result:
+
+```
+{
+  'first_name': 'John'
+  'last_name': 'Smith'
+}
+```
+
+
+* Example:
 ```
 from test_api import TestApiCaller, TestApiCallerError
 
