@@ -12,7 +12,7 @@ class TestApiCaller(ApiBaseCaller):
     METHOD_MAP = {
         'order': {'endpoint': 'order', 'subitems': {
             'add': {'method': 'post'},
-            'get': {'method': 'get', 'endpoint': '%(param_1)s'},
+            'get': {'method': 'get', 'endpoint': '%(param_1)s'},  # for example: api.order.get(10) -> /order/get/10
             'list': {'method': 'get', 'endpoint': 'list'},
             }
         }
